@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+        
+    <include file="table_create.xml" relativeToChangelogFile="true"/>  
+
+       <changeSet author="pkipper" id="pkipper:1" runAlways="true" dbms="postgresql" >
+			<preConditions onFail="MARK_RAN" >
+			    <sqlCheck expectedResult="0">SELECT count(*) from movie_genre</sqlCheck>
+			</preConditions>
+			<sqlFile dbms="oracle"
+					relativeToChangelogFile="true" 
+					encoding="UTF-8"
+					path="movie_genre.sql"
+					stripComments="false" />
+		</changeSet>       
+ 
+       <changeSet author="pkipper" id="pkipper:2" runAlways="true" dbms="postgresql" >
+			<preConditions onFail="MARK_RAN" >
+			    <sqlCheck expectedResult="0">SELECT count(*) from recent_movies</sqlCheck>
+			</preConditions>
+			<sqlFile dbms="oracle"
+					relativeToChangelogFile="true" 
+					encoding="UTF-8"
+					path="recent_movies.sql"
+					stripComments="false" />
+		</changeSet>  
+
+		<changeSet id="pkipper:3" author="pkipper" runAlways="true" dbms="postgresql">
+			<preConditions onFail="CONTINUE">
+			    <sqlCheck expectedResult="7">SELECT count(*) from information_schema.role_table_grants where grantee = 'liquibase' and table_name = 'recent_movies'</sqlCheck>
+			</preConditions>
+			<sql>
+				revoke all on recent_movies from liquibase
+			</sql>
+		</changeSet>
+ 
+ 		<changeSet id="pkipper:3" author="pkipper" runAlways="true" dbms="postgresql">
+			<preConditions onFail="CONTINUE">
+			    <sqlCheck expectedResult="0">SELECT count(*) from information_schema.role_table_grants where grantee = 'liquibase' and table_name = 'recent_movies'</sqlCheck>
+			</preConditions>
+			<sql>
+				grant all on recent_movies to liquibase
+			</sql>
+		</changeSet>
+ 
+</databaseChangeLog> 

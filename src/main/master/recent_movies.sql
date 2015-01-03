@@ -1,0 +1,10 @@
+insert into recent_movies (id, all_movies_id, movie_title, year_made, own) values (movies.recent_movies_seq.nextval, (select id from movies.all_movies where genre = 'action'), 'Robocop', '1987', 'Y');
+insert into recent_movies (id, all_movies_id, movie_title, year_made, own) values (movies.recent_movies_seq.nextval, (select id from movies.all_movies where genre = 'action'), 'Robocop 2', '1990', 'Y');
+insert into recent_movies (id, all_movies_id, movie_title, year_made, own) values (movies.recent_movies_seq.nextval, (select id from movies.all_movies where genre = 'action'), 'Robocop 3', '1993', 'Y');
+insert into recent_movies (id, all_movies_id, movie_title, year_made, own) values (movies.recent_movies_seq.nextval, (select id from movies.all_movies where genre = 'action'), 'Braveheart', '1995', 'Y');
+insert into recent_movies (id, all_movies_id, movie_title, year_made, own) values (movies.recent_movies_seq.nextval, (select id from movies.all_movies where genre = 'family'), 'Frozen', '2013', 'Y');
+insert into recent_movies (id, all_movies_id, movie_title, year_made, own) values (movies.recent_movies_seq.nextval, (select id from movies.all_movies where genre = 'action'), 'Robocop', '2014', 'Y');
+insert into recent_movies (id, all_movies_id, movie_title, year_made, own) values (movies.recent_movies_seq.nextval, (select id from movies.all_movies where genre = 'martial arts'), 'Drunken Fist Boxing', '1979', 'N');
+insert into recent_movies (id, all_movies_id, movie_title, year_made, own) values (movies.recent_movies_seq.nextval, (select id from movies.all_movies where genre = 'comedy'), 'Spaceballs', '1987', 'Y');
+insert into recent_movies (id, all_movies_id, movie_title, year_made, own) values (movies.recent_movies_seq.nextval, (select id from movies.all_movies where genre = 'romance'), 'The Notebook', '2004', 'N');
+insert into recent_movies (id, all_movies_id, movie_title, year_made, own) values (movies.recent_movies_seq.nextval, (select id from movies.all_movies where genre = 'action'), 'The Lego Movie', '2014', 'Y');

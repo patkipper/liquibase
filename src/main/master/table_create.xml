@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+        
+		  
+      <changeSet author="pkipper" id="pkipper:2" runAlways="true" dbms="postgresql" >
+			<preConditions onFail="MARK_RAN" >
+			    <foreignKeyConstraintExists foreignKeyName="movie_genre2recent_movies" foreignKeyTableName="recent_movies" schemaName="movies" />
+			</preConditions>
+			<dropForeignKeyConstraint baseTableName="recent_movies" baseTableSchemaName="movies" constraintName="movie_genre2recent_movies" />
+		</changeSet>    
+ 
+       <changeSet author="pkipper" id="pkipper:3" runAlways="true" dbms="postgresql" >
+			<preConditions onFail="MARK_RAN" >
+			    <primaryKeyExists tableName="recent_movies" schemaName="movies" primaryKeyName="pk_id" />
+			</preConditions>
+			<dropUniqueConstraint tableName="recent_movies" schemaName="movies" constraintName="pk_id" />
+		</changeSet>    
+
+       <changeSet author="pkipper" id="pkipper:4" runAlways="true" dbms="postgresql" >
+			<preConditions onFail="MARK_RAN" >
+			    <primaryKeyExists tableName="recent_movies" schemaName="movies"  primaryKeyName="pk_id_year" />
+			</preConditions>
+			<dropPrimaryKey tableName="recent_movies" schemaName="movies" constraintName="pk_id_year" />
+		</changeSet>    
+		
+       <changeSet author="pkipper" id="pkipper:5" runAlways="true" dbms="postgresql" >
+			<preConditions onFail="MARK_RAN" >
+			    <tableExists tableName="recent_movies" schemaName="movies" />
+			</preConditions>
+			<dropTable tableName="recent_movies" schemaName="movies" cascadeConstraints="true" />
+		</changeSet>    
+		
+		<changeSet id="pkipper:6" author="pkipper" dbms="postgresql" runAlways="true">
+			<preConditions onFail="MARK_RAN" >
+				<sequenceExists sequenceName="recent_movies_seq" schemaName="movies" />
+			</preConditions>
+			<dropSequence sequenceName="recent_movies_seq" schemaName="movies" />
+		</changeSet>	
+
+      <changeSet author="pkipper" id="pkipper:7" dbms="postgresql" >
+			<preConditions onFail="MARK_RAN" >
+				<not>
+					<tableExists tableName="movie_genre" schemaName="movies" />
+				</not>
+			</preConditions>
+			<createTable tableName="movie_genre" schemaName="movies" >
+				<column name="id" type="int">
+					<constraints primaryKey="true" nullable="false" primaryKeyName="pk_id" />
+				</column>
+				<column name="genre" type="varchar2(75)">
+					<constraints nullable="false" />
+				</column>
+			</createTable>	
+		</changeSet>  
+		  		
+       <changeSet author="pkipper" id="pkipper:8" runAlways="true" dbms="postgresql" >
+			<preConditions onFail="MARK_RAN" >
+				<not>
+					<tableExists tableName="recent_movies" schemaName="movies" />
+				</not>
+			</preConditions>
+			<createTable tableName="recent_movies" schemaName="movies" >
+				<column name="id" type="int">
+					<constraints nullable="false" />
+				</column>
+				<column name="movie_genre_id" type="int">
+					<constraints nullable="false" />
+				</column>
+				<column name="movie_title" type="varchar2(500)">
+					<constraints nullable="false" />
+				</column>
+				<column name="year_made" type="varchar2(4)" />
+				<column name="own" type="varchar2(1)" defaultValue="N">
+					<constraints nullable="false" />
+				</column>
+			</createTable>	
+		</changeSet>    
+
+		<changeSet author="pkipper" id="pkipper:9" runAlways="true" dbms="postgresql">
+			<addForeignKeyConstraint 
+					baseColumnNames="movie_genre_id"
+					baseTableName="recent_movies"
+					constraintName="movie_genre2recent_movies"
+					deferrable="true"
+					initiallyDeferred="true"
+					onDelete="CASCADE"
+					onUpdate="RESTRICT"
+					referencedColumnNames="id"
+					referencedTableName="movie_genre"/>
+		</changeSet>
+
+		<changeSet author="pkipper" id="pkipper:10" runAlways="true" dbms="postgresql">
+			<addPrimaryKey 
+					columnNames="id, year_made"
+					constraintName="ak_id_year"
+					schemaName="movies"
+					tableName="recent_movies" />
+		</changeSet>	
+		
+		<changeSet author="pkipper" id="pkipper:11" runAlways="true" dbms="postgresql">
+			<addUniqueConstraint
+					columnNames="id"
+					constraintName="pk_id"
+					schemaName="movies"
+					tableName="recent_movies" />
+		</changeSet>			
+
+		<changeSet author="pkipper" id="pkipper:12" dbms="postgresql">
+			<preConditions>
+				<not>
+					<primaryKeyExists tableName="movie_genre" primaryKeyName="pk_movie_genre_id" schemaName="movies" />
+				</not>
+			</preConditions>
+			<addUniqueConstraint
+					columnNames="id"
+					constraintName="pk_id"
+					schemaName="movies"
+					tableName="movie_genre" />
+		</changeSet>			
+
+		<changeSet author="pkipper" id="pkipper:13" runAlways="true" dbms="postgresql">
+			<preConditions>
+				<not>
+					<sequenceExists schemaName="movies" sequenceName="recent_movies_seq" />
+				</not>
+			</preConditions>
+			<createSequence 
+					sequenceName="recent_movies_seq"
+					incrementBy="1"
+					maxValue="999999999999999"
+					schemaName="movies"  />
+		</changeSet>			
+
+		<changeSet author="pkipper" id="pkipper:14" dbms="postgresql">
+			<preConditions>
+				<not>
+					<sequenceExists schemaName="movies" sequenceName="movie_genre_seq" />
+				</not>
+			</preConditions>
+			<createSequence 
+					sequenceName="movie_genre_seq"
+					incrementBy="1"
+					maxValue="999999999999999"
+					schemaName="movies"  />
+		</changeSet>
+												
+<!--       <changeSet author="pkipper" id="pkipper:31">
+			<preConditions onFail="MARK_RAN" >
+			    <sqlCheck expectedResult="1">SELECT count(*) from all_tables where table_name = 'CPT_RBRVS'</sqlCheck>
+			</preConditions>
+			<sqlFile dbms="oracle"
+					relativeToChangelogFile="true" 
+					encoding="UTF-8"
+					path="cpt_rbrvs_1q15_eqmr1.sql"
+					stripComments="false" />
+		</changeSet>
+		
+       <changeSet author="pkipper" id="pkipper:32">
+			<preConditions onFail="MARK_RAN" >
+			    <sqlCheck expectedResult="0">SELECT count(*) from eqmr.cpt_rbrvs where coding_sys_id = '604'</sqlCheck>
+			</preConditions>
+			<sqlFile dbms="oracle"
+					relativeToChangelogFile="true" 
+					encoding="UTF-8"
+					path="cpt_rbrvs_1q15_eqmr2.sql"
+					stripComments="false" />
+		</changeSet>		
+
+    					         -->
+</databaseChangeLog> 
