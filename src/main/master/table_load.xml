@@ -8,22 +8,22 @@
         
     <include file="table_create.xml" relativeToChangelogFile="true"/>  
 
-       <changeSet author="pkipper" id="pkipper:1" runAlways="true" dbms="postgresql" >
+       <changeSet author="pkipper" id="pkipper:7" dbms="postgresql" >
 			<preConditions onFail="MARK_RAN" >
-			    <sqlCheck expectedResult="0">SELECT count(*) from movie_genre</sqlCheck>
+			    <sqlCheck expectedResult="0">SELECT count(*) from patrick.movie_genre</sqlCheck>
 			</preConditions>
-			<sqlFile dbms="oracle"
+			<sqlFile dbms="postgresql"
 					relativeToChangelogFile="true" 
 					encoding="UTF-8"
 					path="movie_genre.sql"
 					stripComments="false" />
 		</changeSet>       
  
-       <changeSet author="pkipper" id="pkipper:2" runAlways="true" dbms="postgresql" >
+       <changeSet author="pkipper" id="pkipper:6" runAlways="true" dbms="postgresql" >
 			<preConditions onFail="MARK_RAN" >
-			    <sqlCheck expectedResult="0">SELECT count(*) from recent_movies</sqlCheck>
+			    <sqlCheck expectedResult="0">SELECT count(*) from patrick.recent_movies</sqlCheck>
 			</preConditions>
-			<sqlFile dbms="oracle"
+			<sqlFile dbms="postgresql"
 					relativeToChangelogFile="true" 
 					encoding="UTF-8"
 					path="recent_movies.sql"
@@ -35,16 +35,16 @@
 			    <sqlCheck expectedResult="7">SELECT count(*) from information_schema.role_table_grants where grantee = 'liquibase' and table_name = 'recent_movies'</sqlCheck>
 			</preConditions>
 			<sql>
-				revoke all on recent_movies from liquibase
+				revoke all on patrick.recent_movies from liquibase
 			</sql>
 		</changeSet>
  
- 		<changeSet id="pkipper:3" author="pkipper" runAlways="true" dbms="postgresql">
+ 		<changeSet id="pkipper:4" author="pkipper" runAlways="true" dbms="postgresql">
 			<preConditions onFail="CONTINUE">
 			    <sqlCheck expectedResult="0">SELECT count(*) from information_schema.role_table_grants where grantee = 'liquibase' and table_name = 'recent_movies'</sqlCheck>
 			</preConditions>
 			<sql>
-				grant all on recent_movies to liquibase
+				grant all on patrick.recent_movies to liquibase
 			</sql>
 		</changeSet>
  
