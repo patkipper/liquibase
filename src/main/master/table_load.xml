@@ -8,7 +8,7 @@
         
     <include file="table_create.xml" relativeToChangelogFile="true"/>  
 
-       <changeSet author="pkipper" id="pkipper:7" dbms="postgresql" >
+       <changeSet author="pkipper" id="pkipper:7" dbms="postgresql" runAlways="true">
 			<preConditions onFail="MARK_RAN" >
 			    <sqlCheck expectedResult="0">SELECT count(*) from patrick.movie_genre</sqlCheck>
 			</preConditions>

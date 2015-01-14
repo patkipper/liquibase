@@ -42,7 +42,7 @@
 			<dropSequence sequenceName="recent_movies_seq" schemaName="patrick" />
 		</changeSet>	
 
-      <changeSet author="pkipper" id="pkipper:7" dbms="postgresql" >
+      <changeSet author="pkipper" id="pkipper:7" dbms="postgresql" runAlways="true">
 			<preConditions onFail="MARK_RAN" >
 				<not>
 					<tableExists tableName="movie_genre" schemaName="patrick" />
@@ -115,11 +115,9 @@
 					tableName="recent_movies" />
 		</changeSet>			
 
-		<changeSet author="pkipper" id="pkipper:34" dbms="postgresql">
-			<preConditions onFail="WARN">
-				<not>
-					<primaryKeyExists tableName="movie_genre" primaryKeyName="pk_movie_genre_id" schemaName="patrick" />
-				</not>
+		<changeSet author="pkipper" id="pkipper:34" dbms="postgresql" runAlways="true">
+			<preConditions onFail="MARK_RAN">
+			    <sqlCheck expectedResult="0">select count(*) from information_schema.constraint_table_usage where table_name = 'movie_genre' and constraint_name = 'pk_movie_genre_id'</sqlCheck> 
 			</preConditions>
 			<addUniqueConstraint
 					columnNames="id"
@@ -141,8 +139,8 @@
 					schemaName="patrick"  />
 		</changeSet>			
 
-		<changeSet author="pkipper" id="pkipper:14" dbms="postgresql">
-			<preConditions onFail="WARN">
+		<changeSet author="pkipper" id="pkipper:14" dbms="postgresql" runAlways="true">
+			<preConditions onFail="MARK_RAN">
 				<not>
 					<sequenceExists schemaName="patrick" sequenceName="movie_genre_seq" />
 				</not>
